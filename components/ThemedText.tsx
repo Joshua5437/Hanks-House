@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, type TextProps } from 'react-native';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'navBar';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'navBar' | 'welcome' | 'subwelcome';
 };
 
 export function ThemedText({
@@ -42,6 +42,8 @@ export function ThemedText({
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
         type === 'navBar' ? styles.navBar : undefined,
+        type === 'welcome' ? styles.welcome : undefined,
+        type === 'subwelcome' ? styles.subWelcome : undefined,
         (isHovered && type === 'navBar') ? styles.hovered : undefined, // Apply the hover style when hovered
         style,
       ]}
@@ -84,5 +86,15 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline', // Underline on hover (as an example)
     color: '#0a7ea4', // Change color on hover
     fontWeight: 'bold', // Make the text bold on hover
+  },
+    welcome: {
+    fontSize: 56,
+    fontWeight: 'bold',
+    lineHeight: 80,
+  },
+    subWelcome: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    lineHeight: 10,
   },
 });

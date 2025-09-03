@@ -3,13 +3,19 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { ThemedText } from '@/components/ThemedText';
 import { ImageBackground } from 'expo-image';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
-import ScrollStack, { ScrollStackItem } from './ScrollStack';
+import BlurText from "./BlurText";
+import FadeContent from './FadeContent';
+import ShinyText from './ShinyText';
 import SplitText from "./SplitText";
 
 export default function Index() {
-  const items = ['Affordable', 'Aesthetic', 'Housing']; 
+  const router = useRouter();
+
+  const handleAnimationComplete = () => {
+    console.log('Animation completed!');
+  };
 
   return (
     <View style={styles.container}>
@@ -33,7 +39,7 @@ export default function Index() {
             source={require('@/assets/images/Hanks-House-Logo.png')}
             style={[styles.image, {resizeMode: 'contain'}]}
           />
-        </Pressable>
+        </Pressable >
         <Link href={"./(tabs)/about"}>
           <ThemedText type="navBar">About</ThemedText>
         </Link>
@@ -45,47 +51,33 @@ export default function Index() {
         </Link>
       </View>
 
-      <View style={{flex: 1, width: '100%'}}>
-        <ScrollStack>
-        <ScrollStackItem >
-        <View style={styles.box}>
-          <Text style={{fontSize: 50}}>
-            <SplitText splitType='chars' ease={"power3.out"} delay={70} threshold={0.1} text='Affordable' from={{ opacity: 0, y: 40 }} to={{ opacity: 1, y: 0 }}></SplitText>
-          </Text>
-        </View>
-        </ScrollStackItem>
-        <ScrollStackItem>
-          <View style={styles.box}>
-          <Text style={{fontSize: 50}}>
-            <SplitText splitType='chars' ease={"power3.out"} delay={70} threshold={0.1} text='Aesthetic' from={{ opacity: 0, y: 40 }} to={{ opacity: 1, y: 0 }}></SplitText>
-          </Text>
-        </View>
-        </ScrollStackItem>
-        <ScrollStackItem>
-          <View style={styles.box}>
-          <Text style={{fontSize: 50}}>
-            <SplitText splitType='chars' ease={"power3.out"} delay={70} threshold={0.1} text='Housing' from={{ opacity: 0, y: 40 }} to={{ opacity: 1, y: 0 }}></SplitText>
-          </Text>
-        </View>
-        </ScrollStackItem>
-      </ScrollStack>
+      <View style={{flex: 1, width: '50%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', alignContent: 'flex-start', paddingLeft: 200}}>
+        <ThemedText type='welcome'>
+          <SplitText text='Affordable and Aesthetically Pleasing Locations' splitType='lines'></SplitText>
+        </ThemedText>
+        <Text style={{lineHeight: 0, fontSize: 35, color: '#FFF7DE',}}>
+          <BlurText
+              text='Home Starts Here'
+              delay={150}
+              animateBy="words"
+              direction="top"
+              onAnimationComplete={handleAnimationComplete}
+              className="text-2xl mb-8"
+            />
+        </Text>
+
+        <FadeContent blur={true} duration={1000} easing="ease-out" initialOpacity={0}>
+          <Pressable style={styles.button} onPress={() => router.push("/contact")}>
+            <ShinyText 
+              text="Contact Us" 
+              disabled={false} 
+              speed={3} 
+              className='custom-class' 
+            />
+          </Pressable>
+        </FadeContent>
+
       </View>
-
-      {/* <ScrollView contentContainerStyle={styles.scrollContainer} style={{flexDirection: 'column', flex: 1, width: '100%'}}>
-        <View style={styles.box}>
-          <Text style={{fontSize: 50}}>
-            <SplitText splitType='chars' ease={"power3.out"} delay={70} threshold={0.1} text='Affordable' from={{ opacity: 0, y: 40 }} to={{ opacity: 1, y: 0 }}></SplitText>
-          </Text>
-        </View>
-
-        <View style={styles.box}>
-          <SplitText text='Aesthetic' from={{ opacity: 0, y: 40 }} to={{ opacity: 1, y: 0 }}></SplitText>
-        </View>
-
-        <View style={styles.box}>
-          <SplitText text='Housing' from={{ opacity: 0, y: 40 }} to={{ opacity: 1, y: 0 }}></SplitText>
-        </View>
-      </ScrollView> */}
     </View>
   );
 };
@@ -94,7 +86,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   background: {
     position: 'absolute',  // Takes the background behind everything
@@ -122,5 +114,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+    button: {
+    backgroundColor: '#FFF7DE',
+    paddingVertical: 9,
+    paddingHorizontal: 15,
+    fontSize: 23,
+    fontWeight: '400',
+    borderRadius: 30, // 👈 makes it rounded
+    alignItems: "center",
+
+    // // Outline
+    // borderWidth: 2,         // thickness
+    // borderColor: "#fff",    // color of the outline
+  },
+  text: {
+    color: "#fff",
+    fontSize: 16,
   },
 });

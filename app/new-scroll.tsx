@@ -9,13 +9,10 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Image, ImageBackground } from 'expo-image';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
-import SplitText from '../SplitText';
-
-import BlurText from "../BlurText";
-import CurvedLoop from '../CurvedLoop';
+import SplitText from './SplitText';
 
 const HEADER_HEIGHT = 275;
 
@@ -26,10 +23,6 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 // Component that animates when it enters view
 const AnimatedItem = ({ scrollY, children }: any) => {
   const [layoutY, setLayoutY] = useState(0);
-
-  const handleAnimationComplete = () => {
-    console.log('Animation completed!');
-  };
 
   const animatedStyle = useAnimatedStyle(() => {
     const distanceFromTop = scrollY.value;
@@ -67,8 +60,6 @@ const AnimatedItem = ({ scrollY, children }: any) => {
 };
 
 export default function AnimatedScrollScreen() {
-  const router = useRouter();
-
   const scrollY = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler({
@@ -76,10 +67,6 @@ export default function AnimatedScrollScreen() {
       scrollY.value = event.contentOffset.y;
     },
   });
-
-  const handleAnimationComplete = () => {
-    console.log('Animation completed!');
-  };
 
   const animatedHeaderStyle = useAnimatedStyle(() => {
     return {
@@ -107,7 +94,7 @@ export default function AnimatedScrollScreen() {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.header, animatedHeaderStyle]}>
-        <Pressable onPress={() => router.navigate("/")}>
+        <Pressable>
             <Image
             source={require('@/assets/images/Hanks-House-Logo.png')}
             style={[styles.image, {resizeMode: 'contain'}]}
@@ -165,47 +152,26 @@ export default function AnimatedScrollScreen() {
           </Text>
         </View>
 
-        <CurvedLoop 
-        marqueeText="Appreciation ✦ Courtesy ✦ Worth ✦ Honor ✦ Grace ✦ Morality ✦ Principle ✦ Honesty ✦ Honor ✦ Fellowship ✦ Unity ✦ Love ✦ Growth ✦ Prosperity ✦"
-        curveAmount={200}
-        direction="left"
-        interactive={true}
-        className="custom-text-style"
-      />
 
         {/* Values */}
         
         <View style={styles.titleView}>
           <Text style={styles.titleText}>
-            <BlurText
-              text='Our Values'
-              delay={150}
-              animateBy="words"
-              direction="top"
-              onAnimationComplete={handleAnimationComplete}
-              className="text-2xl mb-8"
-            />
+            <Text>Our Values</Text>
           </Text>
           <Text style={styles.titleText}>
             <SplitText splitType='chars' ease={"power3.out"} delay={70} threshold={0.1} text='' from={{ opacity: 0, y: 100 }} to={{ opacity: 1, y: 0 }}></SplitText>
           </Text>
         </View>
 
-        <View style={{flex: 1, width: '45%', alignItems: 'flex-start', flexDirection: 'row', justifyContent: 'space-evenly',paddingLeft: 40}}>
+        <View style={{flex: 1, width: '50%', alignItems: 'flex-start', flexDirection: 'row', justifyContent: 'space-evenly', paddingLeft: 20}}>
           <Text style={{
             fontSize: 25,
             fontWeight: '500',
-            lineHeight: 25,
+            lineHeight: 40,
             color:'#FFF7DE',
             }}>
-              <BlurText
-              text={values}
-              delay={150}
-              animateBy="words"
-              direction="top"
-              onAnimationComplete={handleAnimationComplete}
-              className="text-2xl mb-8"
-            />
+            <Text style={{paddingLeft: 20}}>{values}</Text>
           </Text>
           <Text style={{
             fontSize: 20,
@@ -225,6 +191,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   header: {
     height: HEADER_HEIGHT,
+    backgroundColor: '#6200EE',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     position: 'absolute',
@@ -270,7 +237,7 @@ const styles = StyleSheet.create({
     titleText: {
     fontSize: 120,
     fontWeight: 'bold',
-    lineHeight: 120,
+    lineHeight: 300,
     color:'#FFF7DE',
   },
     scrollContent: {

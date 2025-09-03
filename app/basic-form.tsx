@@ -1,3 +1,4 @@
+import { ThemedText } from "@/components/ThemedText";
 import React, { useState } from "react";
 
 const BasicForm = () => {
@@ -23,13 +24,13 @@ const BasicForm = () => {
 
   return (
     <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-      <h2>Contact Us</h2>
+      <ThemedText type='title'>Contact Us</ThemedText>
       {submitted ? (
         <p>Thank you for reaching out! We'll get back to you soon.</p>
       ) : (
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: "1rem" }}>
-            <label htmlFor="name">Name:</label>
+            <ThemedText type='subtitle'>Name:</ThemedText>
             <input
               type="text"
               id="name"
@@ -41,7 +42,7 @@ const BasicForm = () => {
             />
           </div>
           <div style={{ marginBottom: "1rem" }}>
-            <label htmlFor="email">Email:</label>
+            <ThemedText type='subtitle'>Email:</ThemedText>
             <input
               type="email"
               id="email"
@@ -53,7 +54,7 @@ const BasicForm = () => {
             />
           </div>
           <div style={{ marginBottom: "1rem" }}>
-            <label htmlFor="message">Message:</label>
+            <ThemedText type='subtitle'>Message:</ThemedText>
             <textarea
               id="message"
               name="message"

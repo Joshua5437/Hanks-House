@@ -3,16 +3,19 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 
 import { ThemedText } from '@/components/ThemedText';
 import { ImageBackground } from 'expo-image';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 import CircularGallery from '../CircularGallery';
 
 export default function Properties() {
     const myPhotos = [
-    { image: '/resized-bedroom.png', text: 'First' },
-    { image: '/grayscale.jpg', text: 'Second' },
-    { image: '/resized-bedroom.png', text: 'Third' },
+    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Dining%20Room.png`, text: 'Dining Room' },
+    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Kitchen.png`, text: 'Kitchen' },
+    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Bedroom.png`, text: 'Guest Bedroom' },
+    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Bedroom%20%232.png`, text: 'Master Bedroom' },
   ];
+
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
@@ -31,7 +34,7 @@ export default function Properties() {
         flexDirection: 'row',
         width: '100%',
       }}>
-        <Pressable>
+        <Pressable onPress={() => router.navigate("/")}>
           <Image
             source={require('@/assets/images/Hanks-House-Logo.png')}
             style={[styles.image, {resizeMode: 'contain'}]}
@@ -52,7 +55,7 @@ export default function Properties() {
         <div style={{ height: '600px', position: 'relative' }}>
           <CircularGallery
           items={myPhotos}
-          bend={3}
+          bend={2}
           textColor="#ffffff"
           borderRadius={0.05}
           scrollEase={0.02}/>

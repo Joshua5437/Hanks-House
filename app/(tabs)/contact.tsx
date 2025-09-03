@@ -3,11 +3,12 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 
 import { ThemedText } from '@/components/ThemedText';
 import { ImageBackground } from 'expo-image';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 import BasicForm from '../basic-form';
 
 export default function Contact() {
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
@@ -21,12 +22,12 @@ export default function Contact() {
       {/* Layers over the background */}
 
       <View style={{
-        flex: 0.25,
+        flex: 0.5,
         justifyContent: "space-evenly",
         flexDirection: 'row',
         width: '100%',
       }}>
-        <Pressable>
+        <Pressable onPress={() => router.navigate("/")}>
           <Image
             source={require('@/assets/images/Hanks-House-Logo.png')}
             style={[styles.image, {resizeMode: 'contain'}]}
@@ -43,7 +44,7 @@ export default function Contact() {
         </Link>
       </View>
 
-      <View style={{flex: 1, width: '100%', backgroundColor: 'blue'}}>
+      <View style={{flex: 1, width: '100%'}}>
         <BasicForm />
       </View>
 
