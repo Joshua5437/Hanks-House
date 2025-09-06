@@ -23,8 +23,7 @@ const BasicForm = () => {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-      <ThemedText type='title'>Contact Us</ThemedText>
+    <div style={{ width: "400px", margin: "0 auto" }}>
       {submitted ? (
         <p>Thank you for reaching out! We'll get back to you soon.</p>
       ) : (

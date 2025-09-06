@@ -97,7 +97,7 @@ export default function AnimatedScrollScreen() {
     };
   });
 
-    const about=`Hank's House believes those that have served our country deserve safe, high-quality and supportive housing.
+    const about=`Hank's House believes everyone deserves safe, high-quality and supportive housing.
                Our home leasing company offers well maintained properties and a stress-free rental process tailored to your unique needs.`
 
     const values=`Respect and Dignity: Treating everyone with the respect they deserve
@@ -137,41 +137,43 @@ export default function AnimatedScrollScreen() {
         removeClippedSubviews={Platform.OS !== 'web'} // Disable on web
         contentContainerStyle={styles.scrollContent}
       >
-        <View style={styles.titleView}>
-          <Text style={styles.titleText}>
+        <View style={[styles.titleView, { zIndex: 12, alignItems: 'flex-start'}]}>
+          <Text style={[styles.titleText, {width: '75%'}]}>
             <SplitText splitType='chars' ease={"power3.out"} delay={70} threshold={0.1} text='About Us' from={{ opacity: 0, y: 100 }} to={{ opacity: 1, y: 0 }}></SplitText>
           </Text>
-          <Text style={styles.titleText}>
-            <SplitText splitType='chars' ease={"power3.out"} delay={70} threshold={0.1} text='' from={{ opacity: 0, y: 100 }} to={{ opacity: 1, y: 0 }}></SplitText>
-          </Text>
         </View>
 
-        <View style={{flex: 1, width: '40%', alignItems: 'flex-start', flexDirection: 'row', justifyContent: 'space-evenly', paddingLeft: 20}}>
-          <Text style={{
-            fontSize: 25,
-            fontWeight: '500',
-            lineHeight: 40,
-            color:'#FFF7DE',
-            }}>
-            <SplitText splitType='lines' ease={"power3.out"} delay={70} threshold={0.1} text={about} from={{ opacity: 0, y: 100 }} to={{ opacity: 1, y: 0 }}></SplitText>
-          </Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            lineHeight: 35,
-            color:'#FFF7DE',
-            }}>
-            <SplitText splitType='chars' ease={"power3.out"} delay={70} threshold={0.1} text='' from={{ opacity: 0, y: 100 }} to={{ opacity: 1, y: 0 }}></SplitText>
-          </Text>
+        <View style={{ width: '100%', height: 250, alignItems: 'flex-start', flexDirection: 'row', justifyContent: 'space-evenly'}}>
+          <View style={{width: '40%', alignSelf: 'center'}}>
+            <Text style={{
+              fontSize: 25,
+              fontWeight: '500',
+              lineHeight: 40,
+              color:'#FFF7DE',
+              }}>
+              <SplitText splitType='lines' ease={"power3.out"} delay={70} threshold={0.1} text={about} from={{ opacity: 0, y: 100 }} to={{ opacity: 1, y: 0 }}></SplitText>
+            </Text>
+          </View>
+
+          <View style={{alignSelf: 'center'}}>
+            <Image
+              source={require('@/assets/images/Father.png')}
+              style={{height: 675, width: 507, resizeMode: 'contain', borderRadius: 50, borderWidth: 3, borderColor: '#FFF7DE'}}
+            />
+          </View>
+
         </View>
 
-        <CurvedLoop 
-        marqueeText="Appreciation ✦ Courtesy ✦ Worth ✦ Honor ✦ Grace ✦ Morality ✦ Principle ✦ Honesty ✦ Honor ✦ Fellowship ✦ Unity ✦ Love ✦ Growth ✦ Prosperity ✦"
-        curveAmount={200}
-        direction="left"
-        interactive={true}
-        className="custom-text-style"
-      />
+        <View style={{zIndex: 10,}}>
+          <CurvedLoop 
+            marqueeText="Appreciation ✦ Courtesy ✦ Worth ✦ Honor ✦ Grace ✦ Morality ✦ Principle ✦ Honesty ✦ Honor ✦ Fellowship ✦ Unity ✦ Love ✦ Growth ✦ Prosperity ✦"
+            curveAmount={200}
+            direction="left"
+            interactive={true}
+            className="custom-text-style"
+          />
+        </View>
+
 
         {/* Values */}
         

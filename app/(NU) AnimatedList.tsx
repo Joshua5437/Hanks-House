@@ -1,162 +1,242 @@
-import { motion, useInView } from 'motion/react';
-import React, { MouseEventHandler, ReactNode, UIEvent, useEffect, useRef, useState } from 'react';
-import './(NU) AnimatedList.css';
+import React, { useState } from 'react';
+import { Dimensions, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 
-interface AnimatedItemProps {
-  children: ReactNode;
-  delay?: number;
-  index: number;
-  onMouseEnter?: MouseEventHandler<HTMLDivElement>;
-  onClick?: MouseEventHandler<HTMLDivElement>;
-}
+import { Image, ImageBackground } from 'expo-image';
+import { Link, useRouter } from 'expo-router';
 
-const AnimatedItem: React.FC<AnimatedItemProps> = ({ children, delay = 0, index, onMouseEnter, onClick }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.5, once: false });
-  return (
-    <motion.div
-      ref={ref}
-      data-index={index}
-      onMouseEnter={onMouseEnter}
-      onClick={onClick}
-      initial={{ scale: 0.7, opacity: 0 }}
-      animate={inView ? { scale: 1, opacity: 1 } : { scale: 0.7, opacity: 0 }}
-      transition={{ duration: 0.2, delay }}
-      style={{ marginBottom: '1rem', cursor: 'pointer' }}
-    >
-      {children}
-    </motion.div>
-  );
-};
+import { ThemedText } from '@/components/ThemedText';
+import SplitText from './SplitText';
 
-interface AnimatedListProps {
-  items?: string[];
-  onItemSelect?: (item: string, index: number) => void;
-  showGradients?: boolean;
-  enableArrowNavigation?: boolean;
-  className?: string;
-  itemClassName?: string;
-  displayScrollbar?: boolean;
-  initialSelectedIndex?: number;
-}
 
-const AnimatedList: React.FC<AnimatedListProps> = ({
-  items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-    'Item 6',
-    'Item 7',
-    'Item 8',
-    'Item 9',
-    'Item 10',
-    'Item 11',
-    'Item 12',
-    'Item 13',
-    'Item 14',
-    'Item 15'
-  ],
-  onItemSelect,
-  showGradients = true,
-  enableArrowNavigation = true,
-  className = '',
-  itemClassName = '',
-  displayScrollbar = true,
-  initialSelectedIndex = -1
-}) => {
-  const listRef = useRef<HTMLDivElement>(null);
-  const [selectedIndex, setSelectedIndex] = useState<number>(initialSelectedIndex);
-  const [keyboardNav, setKeyboardNav] = useState<boolean>(false);
-  const [topGradientOpacity, setTopGradientOpacity] = useState<number>(0);
-  const [bottomGradientOpacity, setBottomGradientOpacity] = useState<number>(1);
+import BasicForm from './basic-form';
 
-  const handleScroll = (e: UIEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    const { scrollTop, scrollHeight, clientHeight } = target;
-    setTopGradientOpacity(Math.min(scrollTop / 50, 1));
-    const bottomDistance = scrollHeight - (scrollTop + clientHeight);
-    setBottomGradientOpacity(scrollHeight <= clientHeight ? 0 : Math.min(bottomDistance / 50, 1));
+const HEADER_HEIGHT = 275;
+
+const ReanimatedScrollView = Animated.ScrollView;
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+// Component that animates when it enters view
+const AnimatedItem = ({ scrollY, children }: any) => {
+  const [layoutY, setLayoutY] = useState(0);
+
+  const handleAnimationComplete = () => {
+    console.log('Animation completed!');
   };
 
-  useEffect(() => {
-    if (!enableArrowNavigation) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown' || (e.key === 'Tab' && !e.shiftKey)) {
-        e.preventDefault();
-        setKeyboardNav(true);
-        setSelectedIndex(prev => Math.min(prev + 1, items.length - 1));
-      } else if (e.key === 'ArrowUp' || (e.key === 'Tab' && e.shiftKey)) {
-        e.preventDefault();
-        setKeyboardNav(true);
-        setSelectedIndex(prev => Math.max(prev - 1, 0));
-      } else if (e.key === 'Enter') {
-        if (selectedIndex >= 0 && selectedIndex < items.length) {
-          e.preventDefault();
-          if (onItemSelect) {
-            onItemSelect(items[selectedIndex], selectedIndex);
-          }
-        }
-      }
+  const animatedStyle = useAnimatedStyle(() => {
+    const distanceFromTop = scrollY.value;
+    const startFade = layoutY - SCREEN_HEIGHT;
+    const endFade = layoutY;
+
+    const opacity = interpolate(
+      distanceFromTop,
+      [startFade, endFade],
+      [0, 1],
+      Extrapolate.CLAMP
+    );
+
+    const translateY = interpolate(
+      distanceFromTop,
+      [startFade, endFade],
+      [20, 0],
+      Extrapolate.CLAMP
+    );
+
+    return {
+      opacity,
+      transform: [{ translateY }],
     };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [items, selectedIndex, onItemSelect, enableArrowNavigation]);
-
-  useEffect(() => {
-    if (!keyboardNav || selectedIndex < 0 || !listRef.current) return;
-    const container = listRef.current;
-    const selectedItem = container.querySelector(`[data-index="${selectedIndex}"]`) as HTMLElement | null;
-    if (selectedItem) {
-      const extraMargin = 50;
-      const containerScrollTop = container.scrollTop;
-      const containerHeight = container.clientHeight;
-      const itemTop = selectedItem.offsetTop;
-      const itemBottom = itemTop + selectedItem.offsetHeight;
-      if (itemTop < containerScrollTop + extraMargin) {
-        container.scrollTo({ top: itemTop - extraMargin, behavior: 'smooth' });
-      } else if (itemBottom > containerScrollTop + containerHeight - extraMargin) {
-        container.scrollTo({
-          top: itemBottom - containerHeight + extraMargin,
-          behavior: 'smooth'
-        });
-      }
-    }
-    setKeyboardNav(false);
-  }, [selectedIndex, keyboardNav]);
+  }, [layoutY]);
 
   return (
-    <div className={`scroll-list-container ${className}`}>
-      <div ref={listRef} className={`scroll-list ${!displayScrollbar ? 'no-scrollbar' : ''}`} onScroll={handleScroll}>
-        {items.map((item, index) => (
-          <AnimatedItem
-            key={index}
-            delay={0.1}
-            index={index}
-            onMouseEnter={() => setSelectedIndex(index)}
-            onClick={() => {
-              setSelectedIndex(index);
-              if (onItemSelect) {
-                onItemSelect(item, index);
-              }
-            }}
-          >
-            <div className={`item ${selectedIndex === index ? 'selected' : ''} ${itemClassName}`}>
-              <p className="item-text">{item}</p>
-            </div>
-          </AnimatedItem>
-        ))}
-      </div>
-      {showGradients && (
-        <>
-          <div className="top-gradient" style={{ opacity: topGradientOpacity }}></div>
-          <div className="bottom-gradient" style={{ opacity: bottomGradientOpacity }}></div>
-        </>
-      )}
-    </div>
+    <Animated.View
+      style={[styles.item, animatedStyle]}
+      onLayout={(e) => setLayoutY(e.nativeEvent.layout.y)}
+    >
+      {children}
+    </Animated.View>
   );
 };
 
-export default AnimatedList;
+export default function AnimatedScrollScreen() {
+  const router = useRouter();
+
+  const scrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
+
+  const handleAnimationComplete = () => {
+    console.log('Animation completed!');
+  };
+
+  const animatedHeaderStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            scrollY.value,
+            [0, HEADER_HEIGHT],
+            [0, -HEADER_HEIGHT],
+            Extrapolate.CLAMP
+          ),
+        },
+      ],
+      opacity: interpolate(scrollY.value, [0, HEADER_HEIGHT / 2], [1, 0], Extrapolate.CLAMP),
+    };
+  });
+
+    const about=`Hank's House believes those that have served our country deserve safe, high-quality and supportive housing.
+               Our home leasing company offers well maintained properties and a stress-free rental process tailored to your unique needs.`
+
+    const values=`Respect and Dignity: Treating everyone with the respect they deserve
+    Integrity: Delivering on every promise with honesty and transparency
+    Community: Fostering a sense of belonging and connection for all residents`
+
+  return (
+    <View style={styles.container}>
+      <Animated.View style={[styles.header, animatedHeaderStyle]}>
+        <Pressable onPress={() => router.navigate("/")}>
+            <Image
+            source={require('@/assets/images/Hanks-House-Logo.png')}
+            style={[styles.image, {resizeMode: 'contain'}]}
+            />
+        </Pressable>
+        <Link href={"./about"}>
+            <ThemedText type="navBar">About</ThemedText>
+        </Link>
+        <Link href={"./contact"}>
+            <ThemedText type="navBar">Contact</ThemedText>
+        </Link>
+        <Link href={"./properties"}>
+            <ThemedText type="navBar">Properties</ThemedText>
+        </Link>
+      </Animated.View>
+
+        <View style={styles.background}>
+            <ImageBackground
+            source={require('@/assets/images/new-background.png')}
+            style={styles.backgroundImage}
+            />
+        </View>
+
+      <ReanimatedScrollView
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        removeClippedSubviews={Platform.OS !== 'web'} // Disable on web
+        contentContainerStyle={styles.scrollContent}
+      >
+
+      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'flex-end', width: '100%'}}>
+        <View style={{ flexDirection: 'column' }}>
+          <View>
+            <Text style={styles.titleText}>
+              <SplitText text='Contact Us'></SplitText>
+            </Text>
+          </View>
+
+          <View>
+            <Text style={styles.subtitle}>
+              <SplitText text='Email: info@hankshouse.us'></SplitText>
+            </Text>
+          </View>
+
+          <View>
+            <Text style={styles.subtitle}>
+              <SplitText text='Phone: (225) 330-1201'></SplitText>
+            </Text>
+          </View>
+        </View>
+        
+        <View>
+          <BasicForm />
+        </View>
+      </View>
+
+      <View style={{backgroundColor: '#FFF7DE', width: '100%', height: 70, justifyContent: 'center', alignSelf: 'flex-end'}}>
+        <Text>
+          IT Email: support@qkore.com
+        </Text>
+        <Text>
+          IT Number: 601-522-5636
+        </Text>
+      </View>
+
+      </ReanimatedScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  header: {
+    height: HEADER_HEIGHT,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    position: 'absolute',
+    width: '100%',
+    zIndex: 10,
+    flexDirection: 'row'
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  scrollContainer: {
+    paddingTop: HEADER_HEIGHT,
+    paddingBottom: 50,
+  },
+  item: {
+    height: 80,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  background: {
+    position: 'absolute',  // Takes the background behind everything
+    width: '100%',
+    height: '100%',
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+    image: {
+    height: 275,
+    width: 400,
+  },
+    titleView: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent:  'space-evenly',
+  },
+    titleText: {
+    fontSize: 120,
+    fontWeight: 'bold',
+    lineHeight: 120,
+    color:'#FFF7DE',
+  },
+    scrollContent: {
+    paddingVertical: 275,
+  },
+    subtitle: {
+    fontSize: 35,
+    fontWeight: 'bold',
+    color:'#FFF7DE',
+    height: 50,
+  },
+});
