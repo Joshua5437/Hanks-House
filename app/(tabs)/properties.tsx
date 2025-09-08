@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { Platform, StyleSheet, View, useWindowDimensions } from "react-native";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -7,10 +7,10 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 
-import YoutubeEmbed from "@/components/my-components/YouTube";
+import CircularGallery from "@/components/CircularGallery/CircularGallery";
 import Backdrop from "@/components/my-components/Backdrop";
 import Header from "@/components/my-components/Header";
-import CircularGallery from "@/components/CircularGallery/CircularGallery";
+import YoutubeEmbed from "@/components/my-components/YouTube";
 
 const About = () => {
   const HEADER_HEIGHT = 189;
@@ -21,10 +21,10 @@ const About = () => {
   const isTablet = width > 800;
   
   const myPhotos = [
-    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Dining%20Room.png`, text: 'Dining Room' },
-    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Kitchen.png`, text: 'Kitchen' },
-    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Bedroom.png`, text: 'Guest Bedroom' },
-    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Bedroom%20%232.png`, text: 'Master Bedroom' },
+    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/my-images/Location-1/Dining%20Room.png`, text: 'Dining Room' },
+    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/my-images/Location-1/Kitchen.png`, text: 'Kitchen' },
+    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/my-images/Location-1/Bedroom.png`, text: 'Guest Bedroom' },
+    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/my-images/Location-1/Bedroom%20%232.png`, text: 'Master Bedroom' },
   ];
 
   const scrollHandler = useAnimatedScrollHandler({
