@@ -1,0 +1,11 @@
+.Index {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .Index {
+    font-size: 14px; /* Smaller font on mobile */
+  }
+}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Text, View } from "react-native";
 
-const App = () => {
+const App = ( props ) => {
    const [isHover, setIsHover] = useState(false);
 
    const handleMouseEnter = () => {
@@ -29,10 +29,8 @@ const App = () => {
       onPointerEnter={handleMouseEnter}
       onPointerLeave={handleMouseLeave}
       >
-         <Text
-         style={{color: isHover ? 'red' : 'green',}}
-         >
-            Hover me!
+         <Text style={ isHover ? props.hovered : props.navBar  }>
+            {props.text}
          </Text>
       </View>
    );
