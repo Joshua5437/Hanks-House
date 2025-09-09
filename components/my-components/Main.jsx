@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   button: {
     width: '25%',
     height: 43,
-    width: 140,
+    width: 147,
     backgroundColor: '#FFF7DE',
     paddingVertical: 9,
     paddingHorizontal: 15,
