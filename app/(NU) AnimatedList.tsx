@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Dimensions, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -12,12 +12,10 @@ import { Image, ImageBackground } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
+import SplitText from './SplitText';
 
 
-import CircularGallery from '../CircularGallery';
-
-import YoutubeEmbed from "@/app/YouTube/YouTube";
-import "@/app/YouTube/YouTube.css";
+import BasicForm from './basic-form';
 
 const HEADER_HEIGHT = 275;
 
@@ -69,13 +67,6 @@ const AnimatedItem = ({ scrollY, children }: any) => {
 };
 
 export default function AnimatedScrollScreen() {
-  const myPhotos = [
-    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Dining%20Room.png`, text: 'Dining Room' },
-    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Kitchen.png`, text: 'Kitchen' },
-    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Bedroom.png`, text: 'Guest Bedroom' },
-    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/Location-1/Bedroom%20%232.png`, text: 'Master Bedroom' },
-  ];
-
   const router = useRouter();
 
   const scrollY = useSharedValue(0);
@@ -146,20 +137,42 @@ export default function AnimatedScrollScreen() {
         removeClippedSubviews={Platform.OS !== 'web'} // Disable on web
         contentContainerStyle={styles.scrollContent}
       >
-        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center',  height: 480, width: 854}}>
-          <YoutubeEmbed embedId="gcp-WFL0zPc" />
-        </View>
 
-        <View style={{flex: 1, width: '100%'}}>
-          <div style={{ height: '600px', position: 'relative' }}>
-            <CircularGallery
-            items={myPhotos}
-            bend={2}
-            textColor="#ffffff"
-            borderRadius={0.05}
-            scrollEase={0.02}/>
-          </div>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'flex-end', width: '100%'}}>
+        <View style={{ flexDirection: 'column' }}>
+          <View>
+            <Text style={styles.titleText}>
+              <SplitText text='Contact Us'></SplitText>
+            </Text>
+          </View>
+
+          <View>
+            <Text style={styles.subtitle}>
+              <SplitText text='Email: info@hankshouse.us'></SplitText>
+            </Text>
+          </View>
+
+          <View>
+            <Text style={styles.subtitle}>
+              <SplitText text='Phone: (225) 330-1201'></SplitText>
+            </Text>
+          </View>
         </View>
+        
+        <View>
+          <BasicForm />
+        </View>
+      </View>
+
+      <View style={{backgroundColor: '#FFF7DE', width: '100%', height: 70, justifyContent: 'center', alignSelf: 'flex-end'}}>
+        <Text>
+          IT Email: support@qkore.com
+        </Text>
+        <Text>
+          IT Number: 601-522-5636
+        </Text>
+      </View>
+
       </ReanimatedScrollView>
     </View>
   );
@@ -219,5 +232,11 @@ const styles = StyleSheet.create({
   },
     scrollContent: {
     paddingVertical: 275,
+  },
+    subtitle: {
+    fontSize: 35,
+    fontWeight: 'bold',
+    color:'#FFF7DE',
+    height: 50,
   },
 });
