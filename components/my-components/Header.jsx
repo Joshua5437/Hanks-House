@@ -1,8 +1,8 @@
 import { Link } from 'expo-router';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Pressable, StyleSheet, View, useWindowDimensions, } from 'react-native';
 
-import Logo from '@/components/my-components/Logo';
 import HoverText from '@/components/my-components/HoverEffect';
+import Logo from '@/components/my-components/Logo';
 
 const Header = () => {
   const { width } = useWindowDimensions();
@@ -10,7 +10,11 @@ const Header = () => {
 
   return (
     <View style={styles.header}>
-      <Logo />
+      <Link href={"../"}>
+        <Pressable>
+          <Logo />
+        </Pressable>
+      </Link>
       <Link href={"../(tabs)/about"}>
         <HoverText text="About" navBar={[styles.navBar, {fontSize: (isTablet ? 30 : 15)}]} hovered={[styles.hovered, {fontSize: (isTablet ? 35 : 15)}]}  />
       </Link>

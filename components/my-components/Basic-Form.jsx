@@ -5,14 +5,6 @@ import ShinyText from "../ShinyText/ShinyText";
 
 
 const BasicForm = ({ isTablet }) => {
-//   const sendEmail = async (formData) => {
-//   await MailComposer.composeAsync({
-//     recipients: ['services@qkore.com'],
-//     subject: ['Form Submission'],
-//     body: [`Form data: ${JSON.stringify(formData)}`]
-//   });
-// };
-
   const [submitted, setSubmitted] = useState(false);
   
   // Add formData state
@@ -24,10 +16,12 @@ const BasicForm = ({ isTablet }) => {
 
   // Fix handleSubmit function
   const handleSubmit = () => {
-    console.log("Form Submitted:", formData);
-    setSubmitted(true);
-    // Here you can integrate an API like Formspree or your backend
-    sendEmail()
+    if (formData.name !== '' && formData.email !== '' && formData.message !== '') {
+      setSubmitted(true);
+
+      // Here you can integrate an API like Formspree or your backend
+      sendEmail()
+    }
   };
 
 const sendEmail = async () => {

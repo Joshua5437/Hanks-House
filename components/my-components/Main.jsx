@@ -3,6 +3,8 @@ import ShinyText from '../ShinyText/ShinyText';
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { Link } from 'expo-router';
+
 const Main = () => {
   return (
     <View>
@@ -14,14 +16,16 @@ const Main = () => {
       </View>
       <View style={{padding: 30}}>
         <FadeContent blur={true} duration={1000} easing="ease-out" initialOpacity={0}>
-          <Pressable style={styles.button} onPress={() => router.push("/contact")}>
-            <ShinyText 
-              text="Contact Us" 
-              disabled={false} 
-              speed={3} 
-              className='custom-class' 
-            />
-          </Pressable>
+          <Link href={"../(tabs)/contact"}>
+            <Pressable style={styles.button}>
+              <ShinyText 
+                text="Contact Us" 
+                disabled={false} 
+                speed={3} 
+                className='custom-class' 
+              />
+            </Pressable>
+          </Link>
         </FadeContent>
       </View>
     </View>

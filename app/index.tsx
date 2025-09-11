@@ -1,4 +1,3 @@
-
 import Backdrop from '@/components/my-components/Backdrop';
 import Header from '@/components/my-components/Header';
 import Main from '@/components/my-components/Main';
