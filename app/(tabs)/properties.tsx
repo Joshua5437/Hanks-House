@@ -24,7 +24,7 @@ const About = () => {
     { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/my-images/Location-1/Dining%20Room.png`, text: 'Dining Room' },
     { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/my-images/Location-1/Kitchen.png`, text: 'Kitchen' },
     { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/my-images/Location-1/Bedroom.png`, text: 'Guest Bedroom' },
-    { image: `https://github.com/Joshua5437/Hanks-House/blob/main/assets/images/my-images/Location-1/Bedroom%20%232.png`, text: 'Master Bedroom' },
+    { image: `https://raw.githubusercontent.com/Joshua5437/Hanks-House/refs/heads/main/assets/images/my-images/Location-1/Bedroom%20%232.png`, text: 'Master Bedroom' },
   ];
 
   const scrollHandler = useAnimatedScrollHandler({
