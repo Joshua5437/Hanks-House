@@ -1,9 +1,18 @@
 import { useState } from 'react';
-import { StyleSheet, Pressable, TextInput, View, Text } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import FadeContent from "../FadeContent/FadeContent";
 import ShinyText from "../ShinyText/ShinyText";
 
+
 const BasicForm = ({ isTablet }) => {
+//   const sendEmail = async (formData) => {
+//   await MailComposer.composeAsync({
+//     recipients: ['services@qkore.com'],
+//     subject: ['Form Submission'],
+//     body: [`Form data: ${JSON.stringify(formData)}`]
+//   });
+// };
+
   const [submitted, setSubmitted] = useState(false);
   
   // Add formData state
@@ -18,7 +27,40 @@ const BasicForm = ({ isTablet }) => {
     console.log("Form Submitted:", formData);
     setSubmitted(true);
     // Here you can integrate an API like Formspree or your backend
+    sendEmail()
   };
+
+const sendEmail = async () => {
+  try {
+    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        service_id: 'hanks_house',
+        template_id: 'template_ls56l07',
+        user_id: 'm0TlmtnpmHQes_7SH', // public key
+        template_params: {
+          name: `${formData.name}`,
+          message: `${formData.message}`,
+          email: `${formData.email}`,
+          title: `New Form Submitted`,
+          // add more params as needed
+        },
+      }),
+    });
+
+    if (response.ok) {
+      console.log('✅ Email sent successfully');
+    } else {
+      const errorData = await response.json();
+      console.error('❌ Email failed to send', errorData);
+    }
+  } catch (err) {
+    console.error('❌ Network error:', err);
+  }
+};
 
   return (
     <View style={[styles.container, { flex: isTablet ? 1 : null }]}>
