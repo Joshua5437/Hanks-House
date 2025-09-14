@@ -77,7 +77,7 @@ const About = () => {
         />
         
         <View style={{ paddingBottom: 400, flex: 1, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center'}}>
-          <YoutubeEmbed embedId="gcp-WFL0zPc" />
+          <YoutubeEmbed embedId="zuTIzOrGkRw" />
         </View>
       </ReanimatedScrollView>
     </View>
