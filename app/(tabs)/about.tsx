@@ -89,7 +89,9 @@ Community: Fostering a sense of belonging and connection for all residents`
         </View>
         
         <View>
-          <Text style={{ color: "#FFF7DE", alignSelf: 'center', fontSize: 20, padding: 45}}>Hank's House is dedicated to providing an all-inclusive affordable shared living home to all those who are needing a new start. We offer a safe and clean living spaces. Let us help you find your place to call...Home.</Text>
+          <Text style={{ color: "#FFF7DE", alignSelf: 'center', fontSize: 20, padding: 45}}>
+            Hank's House is dedicated to providing an all-inclusive affordable shared living home to all those who are needing a new start. We offer a safe and clean living spaces. Let us help you find your place to call... <Text style={{ color: "#FFF7DE", alignSelf: 'center', fontSize: 20, fontWeight: 'bold'}}>Home</Text>.
+          </Text>
         </View>
 
         <View>
