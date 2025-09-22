@@ -15,41 +15,27 @@ const BasicForm = ({ isTablet }) => {
   });
 
   // Fix handleSubmit function
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (formData.name !== '' && formData.email !== '' && formData.message !== '') {
-      setSubmitted(true);
-
-      // Here you can integrate an API like Formspree or your backend
-      sendEmail()
+      sendEmail({ Name: formData.name, Email: formData.email, Message: formData.message })
     }
   };
 
-const sendEmail = async () => {
+const sendEmail = async ({ Name, Email, Message }) => {
   try {
-    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    const response = await fetch('https://formspree.io/f/mgvnwzak', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json', 
       },
-      body: JSON.stringify({
-        service_id: 'hanks_house',
-        template_id: 'template_ls56l07',
-        user_id: 'm0TlmtnpmHQes_7SH', // public key
-        template_params: {
-          name: `${formData.name}`,
-          message: `${formData.message}`,
-          email: `${formData.email}`,
-          title: `New Form Submitted`,
-          // add more params as needed
-        },
-      }),
-    });
+      body: JSON.stringify({ Name , Email, Message })
+    })
 
     if (response.ok) {
-      console.log('✅ Email sent successfully');
+      setSubmitted(true);
     } else {
-      const errorData = await response.json();
-      console.error('❌ Email failed to send', errorData);
+      // const errorData = await response.json();
+      // console.error('❌ Email failed to send', errorData);
     }
   } catch (err) {
     console.error('❌ Network error:', err);
